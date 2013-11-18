@@ -13,7 +13,7 @@ namespace TaskForce.Network.Core
 	/// </summary>
 	public abstract class Client
 	{
-		private static bool _Listen = true;
+		private static bool _Listen = false;
 		private static bool _TryReconnect = false;
 		private BinaryFormatter _BFormatter = new BinaryFormatter();
 		private TcpClient _Client;
@@ -38,6 +38,9 @@ namespace TaskForce.Network.Core
 		{
 			try
 			{
+				if (_Listen || _TryReconnect)
+					throw new ProtocolViolationException("The Client is already connected. Please disconnect before reconnect");
+
 				_Listen = true;
 				_Client = new TcpClient(AddressFamily.InterNetwork);
 				_Client.Connect(_Endpoint);

@@ -37,6 +37,9 @@ namespace TaskForce.Network.Core
 		/// </summary>
 		public void Start()
 		{
+			if (_Listen)
+				throw new ProtocolViolationException("The Server is already started. Please stop the server before restarting");
+
 			_Listen = true;
 			Thread th = new Thread(ListenConnections);
 			th.Name = "ListenConnections";
