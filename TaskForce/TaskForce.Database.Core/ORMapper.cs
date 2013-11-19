@@ -39,11 +39,10 @@ namespace TaskForce.Database.Core
 					else
 					{
 						//set the value of the property
-						if (IsSameType(property, (rdr[property.DBFieldName].GetType())))
+						if (IsSameType(property, rdr[property.DBFieldName].GetType()))
 						{
 							property.Prop.SetValue(item,
-								rdr[property.DBFieldName] == DBNull.Value ?
-									null : rdr[property.DBFieldName],
+								rdr[property.DBFieldName],
 								null);
 						}
 						else
@@ -52,8 +51,7 @@ namespace TaskForce.Database.Core
 							{
 								//chane the type of the data in table to that of the property and set the value
 								property.Prop.SetValue(item,
-									Convert.ChangeType(rdr[property.DBFieldName] == DBNull.Value ?
-										null : rdr[property.DBFieldName],
+									Convert.ChangeType(rdr[property.DBFieldName],
 									property.Prop.PropertyType),
 									null);
 							}
