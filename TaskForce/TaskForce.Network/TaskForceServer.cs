@@ -12,8 +12,8 @@ namespace TaskForce.Network
 	/// </summary>
 	public class TaskForceServer : Server
 	{
-		private IList<Filter> _LastForbiddenFilterList;
-		private IList<Filter> _LastProtectedFilterList;
+		private IList<Filter> _LastForbiddenFilterList = new List<Filter>();
+		private IList<Filter> _LastProtectedFilterList = new List<Filter>();
 
 		/// <summary>
 		/// constructor
