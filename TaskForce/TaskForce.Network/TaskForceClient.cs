@@ -23,17 +23,17 @@ namespace TaskForce.Network
 		/// Represents the method that will handle a FilterRefreshed event.
 		/// </summary>
 		/// <param name="protocol"></param>
-		public delegate void FilterRefresgedHandler(IList<Filter> filterList);
+		public delegate void FilterRefreshedHandler(IList<Filter> filterList);
 
 		/// <summary>
 		/// Occurs after a RefreshForbiddendFilterList command received.
 		/// </summary>
-		public event FilterRefresgedHandler ForbiddenFilterListRefreshed;
+		public event FilterRefreshedHandler ForbiddenFilterListRefreshed;
 
 		/// <summary>
 		/// Occurs after a RefreshProtectedFilterList command received.
 		/// </summary>
-		public event FilterRefresgedHandler ProtectedFilterListRefreshed;
+		public event FilterRefreshedHandler ProtectedFilterListRefreshed;
 
 		/// <summary>
 		/// Sends an Protocol object to the server

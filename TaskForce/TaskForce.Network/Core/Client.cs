@@ -117,12 +117,7 @@ namespace TaskForce.Network.Core
 			{
 				Thread.Sleep(5000);
 
-				bool con = Connect();
-
-				if (con)
-				{
-					_TryReconnect = false;
-				}
+				_TryReconnect = !Connect();
 			}
 		}
 

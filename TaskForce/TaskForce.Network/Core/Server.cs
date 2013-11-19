@@ -63,6 +63,13 @@ namespace TaskForce.Network.Core
 		protected abstract void DataReceived(NetworkPackage package);
 
 		/// <summary>
+		/// Will be executed after a new client connected
+		/// </summary>
+		/// <param name="newClient">The new connected client</param>
+		protected virtual void OnNewClient(TcpClient newClient)
+		{ }
+
+		/// <summary>
 		/// Sends an object to the client
 		/// </summary>
 		/// <param name="client">The receiver</param>
@@ -140,6 +147,8 @@ namespace TaskForce.Network.Core
 
 		private void StartClientThread(TcpClient client)
 		{
+			OnNewClient(client);
+
 			Thread th = new Thread(Listen);
 			th.Name = "ClientListen " + Clients.Count;
 			th.IsBackground = true;

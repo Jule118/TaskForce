@@ -12,6 +12,9 @@ namespace TaskForce.Network
 	/// </summary>
 	public class TaskForceServer : Server
 	{
+		private IList<Filter> _LastForbiddenFilterList;
+		private IList<Filter> _LastProtectedFilterList;
+
 		/// <summary>
 		/// constructor
 		/// </summary>
@@ -36,6 +39,8 @@ namespace TaskForce.Network
 		/// <param name="forbiddenFilterList">List of the new ProtectedFilters</param>
 		public void RefreshForbiddenFilterLists(IList<Filter> forbiddenFilterList)
 		{
+			_LastForbiddenFilterList = forbiddenFilterList;
+
 			NetworkPackage pack = new NetworkPackage(Command.RefreshForbiddenFilterList, forbiddenFilterList);
 
 			foreach (TcpClient client in Clients)
@@ -48,6 +53,8 @@ namespace TaskForce.Network
 		/// <param name="protectedFilterList">List of the new ForbiddenFilters</param>
 		public void RefreshProtectedFilterLists(IList<Filter> protectedFilterList)
 		{
+			_LastProtectedFilterList = protectedFilterList;
+
 			NetworkPackage pack = new NetworkPackage(Command.RefreshProtectedFilterList, protectedFilterList);
 
 			foreach (TcpClient client in Clients)
@@ -72,6 +79,21 @@ namespace TaskForce.Network
 				default:
 					throw new ArgumentException(string.Format("Coudn't handle '{0}'", package.Cmd));
 			}
+		}
+
+		/// <summary>
+		/// Will be executed after a new client connected
+		/// </summary>
+		/// <param name="newClient">The new connected client</param>
+		protected override void OnNewClient(TcpClient newClient)
+		{
+			NetworkPackage pack;
+
+			pack = new NetworkPackage(Command.RefreshProtectedFilterList, _LastProtectedFilterList);
+			Send(newClient, pack);
+
+			pack = new NetworkPackage(Command.RefreshForbiddenFilterList, _LastForbiddenFilterList);
+			Send(newClient, pack);
 		}
 	}
 }
