@@ -25,30 +25,51 @@ namespace TaskForce.Database.Core
 			{
 				try
 				{
-					#region Set Value
-
-					//set the value of the property
-					if (property.IsFlag)
-						property.Prop.SetValue(item,
-							rdr[property.DBFieldName] == DBNull.Value ?
-								null : rdr[property.DBFieldName],
-							null);
+					if (rdr[property.DBFieldName] == DBNull.Value)
+					{
+						if (property.IsNullable)
+						{
+							property.Prop.SetValue(item,
+								null,
+								null);
+						}
+						else
+							throw new DBException(string.Format("The type '{0}' can't be null", property.Prop.PropertyType.FullName));
+					}
 					else
 					{
-						//chane the type of the data in table to that of the property and set the value
-						property.Prop.SetValue(item,
-							Convert.ChangeType(rdr[property.DBFieldName] == DBNull.Value ?
-								null : rdr[property.DBFieldName],
-							property.Prop.PropertyType),
-							null);
+						//set the value of the property
+						if (IsSameType(property, (rdr[property.DBFieldName].GetType())))
+						{
+							property.Prop.SetValue(item,
+								rdr[property.DBFieldName] == DBNull.Value ?
+									null : rdr[property.DBFieldName],
+								null);
+						}
+						else
+						{
+							try
+							{
+								//chane the type of the data in table to that of the property and set the value
+								property.Prop.SetValue(item,
+									Convert.ChangeType(rdr[property.DBFieldName] == DBNull.Value ?
+										null : rdr[property.DBFieldName],
+									property.Prop.PropertyType),
+									null);
+							}
+							catch (Exception)
+							{
+								throw new DBException(string.Format("The types '{0}' (Class) and '{1}' (DB) aren't compatible", property.Prop.PropertyType.FullName, rdr[property.DBFieldName].GetType().FullName));
+							}
+						}
 					}
-
-					#endregion Set Value
 				}
 				catch (Exception)
 				{
-					missingFields += property.DBFieldName;
-					missingFields += "/";
+					if (string.IsNullOrEmpty(missingFields))
+						missingFields += property.DBFieldName;
+					else
+						missingFields += " / " + property.DBFieldName;
 				}
 			}
 
@@ -60,6 +81,7 @@ namespace TaskForce.Database.Core
 		};
 
 		private static List<PropertyCached> _Cache;
+
 		private static Type _Type = typeof(T);
 
 		/// <summary>
@@ -79,6 +101,18 @@ namespace TaskForce.Database.Core
 		{
 			get { return _Cache.Find(c => c.DBFieldName == dbFieldName).Prop.GetValue(this, null); }
 			set { _Cache.Find(c => c.DBFieldName == dbFieldName).Prop.SetValue(this, value, null); }
+		}
+
+		private static bool IsSameType(PropertyCached propertyCached, Type dbType)
+		{
+			if (propertyCached.IsNullable)
+			{
+				return Nullable.GetUnderlyingType(propertyCached.Prop.PropertyType) == dbType;
+			}
+			else
+			{
+				return (propertyCached.Prop.PropertyType == dbType) || (propertyCached.IsFlag && dbType == typeof(int));
+			}
 		}
 
 		/// <summary>
@@ -105,6 +139,15 @@ namespace TaskForce.Database.Core
 
 					#endregion Get DBField
 
+					#region Check IsNullable
+
+					if (newDBProp.Prop.PropertyType.IsGenericType && newDBProp.Prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+						newDBProp.IsNullable = true;
+					else
+						newDBProp.IsNullable = false;
+
+					#endregion Check IsNullable
+
 					#region Check IsFlag
 
 					newDBProp.IsFlag = Attribute.IsDefined(newDBProp.Prop.PropertyType, typeof(FlagsAttribute));
@@ -120,9 +163,9 @@ namespace TaskForce.Database.Core
 		{
 			public string DBFieldName { get; set; }
 
-			public bool IsDBNullable { get; set; }
-
 			public bool IsFlag { get; set; }
+
+			public bool IsNullable { get; set; }
 
 			public PropertyInfo Prop { get; set; }
 		}

@@ -23,7 +23,7 @@ namespace TaskForce.Entities
 		public bool Active { get; set; }
 
 		[DBField("FilterGroup")]
-		public int FilterGroup { get; set; }
+		public int? FilterGroup { get; set; }
 
 		[DBField("ID")]
 		public int ID { get; set; }

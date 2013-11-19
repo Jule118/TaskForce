@@ -13,7 +13,7 @@ namespace TaskForce.Network.Core
 	/// </summary>
 	public abstract class Server
 	{
-		private static bool _Listen = true;
+		private static bool _Listen = false;
 		private int _Port;
 		private TcpListener _Server;
 
