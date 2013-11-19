@@ -36,15 +36,6 @@ namespace TaskForce.Network
 		public event FilterRefresgedHandler ProtectedFilterListRefreshed;
 
 		/// <summary>
-		/// Returns the server ip
-		/// </summary>
-		/// <returns></returns>
-		public static string GetServerIP()
-		{
-			return "127.0.0.1";
-		}
-
-		/// <summary>
 		/// Sends an Protocol object to the server
 		/// </summary>
 		/// <param name="protocol">The Protocol to send</param>

@@ -25,7 +25,7 @@ namespace ClientTest
 
 		private static void Main(string[] args)
 		{
-			_Client = new TaskForceClient(TaskForceClient.GetServerIP());
+			_Client = new TaskForceClient("127.0.0.1");
 			_Client.ProtectedFilterListRefreshed += _Client_ProtectedFilterListRefreshed;
 			_Client.Connect();
 
