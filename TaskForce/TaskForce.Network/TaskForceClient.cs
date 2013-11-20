@@ -58,14 +58,16 @@ namespace TaskForce.Network
 					IList<Filter> protectedList = package.Value as IList<Filter>;
 					if (protectedList == null) throw new ArgumentException("Value must be of type 'IList<Filter>'");
 
-					ProtectedFilterListRefreshed(protectedList);
+					if (ProtectedFilterListRefreshed != null)
+						ProtectedFilterListRefreshed(protectedList);
 					break;
 
 				case Command.RefreshForbiddenFilterList:
 					IList<Filter> forbiddenList = package.Value as IList<Filter>;
 					if (forbiddenList == null) throw new ArgumentException("Value must be of type 'IList<Filter>'");
 
-					ForbiddenFilterListRefreshed(forbiddenList);
+					if (ForbiddenFilterListRefreshed != null)
+						ForbiddenFilterListRefreshed(forbiddenList);
 					break;
 
 				default:

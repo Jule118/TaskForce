@@ -28,6 +28,17 @@ namespace TaskForce.Network.Core
 		}
 
 		/// <summary>
+		/// Represents the method that will handle the NewClientConnected event.
+		/// </summary>
+		/// <param name="protocol"></param>
+		public delegate void NewClientConnectedHandler(TcpClient newClient);
+
+		/// <summary>
+		/// Occurs after a new client connected.
+		/// </summary>
+		public event NewClientConnectedHandler NewClientConnected;
+
+		/// <summary>
 		/// List of all connected clients
 		/// </summary>
 		protected IList<TcpClient> Clients { get; set; }
@@ -61,13 +72,6 @@ namespace TaskForce.Network.Core
 		/// </summary>
 		/// <param name="package">The The received package</param>
 		protected abstract void DataReceived(NetworkPackage package);
-
-		/// <summary>
-		/// Will be executed after a new client connected
-		/// </summary>
-		/// <param name="newClient">The new connected client</param>
-		protected virtual void OnNewClient(TcpClient newClient)
-		{ }
 
 		/// <summary>
 		/// Sends an object to the client
@@ -147,12 +151,13 @@ namespace TaskForce.Network.Core
 
 		private void StartClientThread(TcpClient client)
 		{
-			OnNewClient(client);
-
 			Thread th = new Thread(Listen);
 			th.Name = "ClientListen " + Clients.Count;
 			th.IsBackground = true;
 			th.Start(new ListenParameters(client));
+
+			if (NewClientConnected != null)
+				NewClientConnected(client);
 		}
 	}
 }

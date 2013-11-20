@@ -20,7 +20,9 @@ namespace TaskForce.Network
 		/// </summary>
 		public TaskForceServer()
 			: base(1099)
-		{ }
+		{
+			NewClientConnected += TaskForceServer_NewClientConnected;
+		}
 
 		/// <summary>
 		/// Represents the method that will handle the ProtocolReceived event.
@@ -73,7 +75,8 @@ namespace TaskForce.Network
 					Protocol protocol = package.Value as Protocol;
 					if (protocol == null) throw new ArgumentException("Value must be of type 'Protocol'");
 
-					ProtocolReceived((Protocol)package.Value);
+					if (ProtocolReceived != null)
+						ProtocolReceived((Protocol)package.Value);
 					break;
 
 				default:
@@ -81,11 +84,7 @@ namespace TaskForce.Network
 			}
 		}
 
-		/// <summary>
-		/// Will be executed after a new client connected
-		/// </summary>
-		/// <param name="newClient">The new connected client</param>
-		protected override void OnNewClient(TcpClient newClient)
+		private void TaskForceServer_NewClientConnected(TcpClient newClient)
 		{
 			NetworkPackage pack;
 

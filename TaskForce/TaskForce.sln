@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskForce.Entities", "TaskF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{EE90C301-3F15-405C-BC75-66C923472954}"
 	ProjectSection(SolutionItems) = preProject
+		Misc\DeinstalServicel.bat = Misc\DeinstalServicel.bat
+		Misc\InstallService.bat = Misc\InstallService.bat
 		Misc\MSSQL_TaskForce.sql = Misc\MSSQL_TaskForce.sql
 		Misc\MSSQL_TestData.sql = Misc\MSSQL_TestData.sql
 		Misc\TaskForce.ruleset = Misc\TaskForce.ruleset
@@ -21,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTest", "ClientTest\ClientTest.csproj", "{C9B31667-0C71-4454-83F8-472390D1AE8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CServerTest", "CServerTest\CServerTest.csproj", "{1599307E-B739-48D0-9768-99CE19E94D38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskForce.ClientService", "TaskForce.ClientService\TaskForce.ClientService.csproj", "{4CF3364E-F917-4CAA-B489-F3A4D8405CC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +56,10 @@ Global
 		{1599307E-B739-48D0-9768-99CE19E94D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1599307E-B739-48D0-9768-99CE19E94D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1599307E-B739-48D0-9768-99CE19E94D38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CF3364E-F917-4CAA-B489-F3A4D8405CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CF3364E-F917-4CAA-B489-F3A4D8405CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CF3364E-F917-4CAA-B489-F3A4D8405CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CF3364E-F917-4CAA-B489-F3A4D8405CC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
